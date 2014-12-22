@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Crayon';
+    src: url('Crayon.ttf');
+}
+
+h1, h2, h3{
+    font-family: 'Indie Flower', cursive;
+    font-family: 'Crayon';
+}
