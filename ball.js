@@ -6,18 +6,6 @@ function Ball(xy, speed, radius) {
   this.speed = speed;
   this.r = radius;
 
-  this.lineCollision = function(){
-    //STUB
-  }
-
-  this.sphereCollision = function(){
-    //STUB
-  }
-
-  this.flipperCollision = function(){
-    
-  }
-
   this.move = function() {
     this.gravity();
     this.lastCord = this.cord.slice(0);

@@ -24,16 +24,24 @@ function Line(pointA, pointB, fiction, bp) {
 
   this.collision = function(ballInstance){
     var result1 = slopeIntercept(ballInstance.lastCord, ballInstance.cord),
+        //result1 contains the slope and intercept value for ball curve
         m1 = result1[0],
         b1 = result1[1];
+
+
     var result2 = slopeIntercept(this.a, this.b),
+        //result1 contains the slope and intercept value for surface curve
         m2 = result2[0],
         b2 = result2[1];
+
+    //x and y are the intercept point for both curves
     var x = (b2-b1)/(m1-m2),
         y = x*m1+b1;
         y_test = x*m2+b2; //this value is for testing purposes
+
     if ( withinRange([x,y], ballInstance.cord, ballInstance.lastCord) 
       && withinRange([x,y], this.a, this.b) ){
+      //if the intercepting point is in the range of both curve, then if collided
       return true;
     }
     return false;
