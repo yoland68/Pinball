@@ -19,7 +19,7 @@ function lineTo(p) {
   g.lineTo(xy[0], xy[1]);
 }
 
-function drawSphere(ballInstance){
+function drawSphere(ballInstance, color){
   var q = m.transform([ballInstance.cord[0], ballInstance.cord[1], 0]);
   var xy = viewport(q);
   g.fillStyle = "#000";
@@ -44,8 +44,15 @@ function gameCheck(ballInstance) {
 }
 
 //Global variables
-var ball = new Ball([0,.5], [0.0001,0], .02);
-var line1 = new Line([-.1, 0], [0.1, 0.1], 0, 0);
+var ball = new Ball([0,2], [0.0001,0], .02);
+var lines = [
+  new Line([-0.9, -1.5], [-1,1], 0, 1),
+  new Line([1,1], [.9,-1.5], 0, 1),
+  // new Line([1,-1], [-1,-1], 0, 1),
+  new Line([-.1, 0], [0.1, 0.1], 0, 1.2),
+  new Line([-.5, -.3], [-0.1, -0.1], 0, 1.2),
+];
+lines.push(); 
 
 //Animations
 myCanvas.animate = function(_g) {
@@ -65,10 +72,14 @@ myCanvas.animate = function(_g) {
   
   m.identity();
   ball.move();
-  line1.collision(ball);
+  for (var i = 0; i < lines.length; i++) {
+    lines[i].collision(ball);
+  }
   gameCheck(ball);
   drawSphere(ball);
-  drawLine(line1);
+  for (var i = 0; i < lines.length; i++) {
+    drawLine(lines[i]);
+  }
 
   
   g.strokeStyle = 'rgb(0,0,0)';

@@ -74,11 +74,11 @@ function calcDist(point, m, i){
 }
 
 //Objects
-function Line(pointA, pointB, fiction, bp) {
+function Line(pointA, pointB, fiction, bouncingPower) {
   this.a = pointA;
   this.b = pointB;
   this.fiction = fiction;
-  this.bouncePower = bp;
+  this.bp = bouncingPower;
 
   this.collision = function(ballInstance){
     var result1 = slopeIntercept(ballInstance.lastCord, ballInstance.cord),
@@ -93,7 +93,7 @@ function Line(pointA, pointB, fiction, bp) {
 
 
     if ( withinRange([x,y], ballInstance.cord, ballInstance.lastCord) && withinRange([x,y], this.a, this.b) ){
-      console.log(ballInstance.speed);
+      // console.log(ballInstance.speed);
       m2 = m2 == 0 ? 1000000 : m2;
       var perp_m = -1/m2,
           perp_b = y-perp_m*x;
@@ -101,9 +101,9 @@ function Line(pointA, pointB, fiction, bp) {
       // console.log("perp_b = " + perp_b);
       var offset = calcDist(ballInstance.lastCord, perp_m, perp_b);
       var nextPoint = [ballInstance.lastCord[0]+offset[0]*2, ballInstance.lastCord[1]+offset[1]*2];
-      ballInstance.speed[0] = nextPoint[0]-ballInstance.cord[0];
-      ballInstance.speed[1] = nextPoint[1]-ballInstance.cord[1];
-      console.log(ballInstance.speed+"\n");
+      ballInstance.speed[0] = (nextPoint[0]-ballInstance.cord[0])*this.bp;
+      ballInstance.speed[1] = (nextPoint[1]-ballInstance.cord[1])*this.bp;
+      // console.log(ballInstance.speed+"\n");
       ballInstance.move()
       return true
     }
