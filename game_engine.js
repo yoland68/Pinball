@@ -5,7 +5,6 @@ function viewport(p) {
 
 function viewtranslate(num) {
   return w*num;
-  // return 
 }
 
 function moveTo(p) {
@@ -40,8 +39,9 @@ function gameCheck(ballInstance) {
 }
 
 //Global variables
-var ball = new Ball([-1,0], [0.02,0.02], .02);
+var ball = new Ball([-1,0], [0.04,0.02], .02);
 
+//Animations
 myCanvas.animate = function(_g) {
   g = _g;
   w = g.canvas.width;
