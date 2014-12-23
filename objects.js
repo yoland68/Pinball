@@ -16,11 +16,11 @@ function withinRange(point, limitA, limitB){
 }
 
 //Objects
-function Line(pointA, pointB, fiction, bp) {
+function Line(pointA, pointB, fiction, bouncePower) {
   this.a = pointA;
   this.b = pointB;
   this.fiction = fiction;
-  this.bouncePower = bp;
+  this.bp = bouncePower;
 
   this.collision = function(ballInstance){
     var result1 = slopeIntercept(ballInstance.lastCord, ballInstance.cord),
