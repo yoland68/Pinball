@@ -34,6 +34,12 @@ function drawLine(lineInstance){
   lineTo([lineInstance.b[0], lineInstance.b[1], 0]);
 }
 
+function drawFlipper(flipper){
+  moveTo([flipper.root[0], flipper.root[1], 0]);
+  // lineTo([flipper.tip[0], flipper.tip[1], 0]);
+  lineTo([flipper.drawingTip[0], flipper.drawingTip[1], 0]);
+}
+
 function gameCheck(ballInstance) {
   var q = m.transform([ballInstance.cord[0], ballInstance.cord[1], 0]);
   var xy = viewport(q);
@@ -44,14 +50,19 @@ function gameCheck(ballInstance) {
 }
 
 //Global variables
-var ball = new Ball([0,2], [0.0001,0], .02);
+var ball = new Ball([.1,1.1], [0.0001,0], .02);
 var lines = [
   new Line([-.99+0.1, -1.45], [-1+.1,1.45], 0.1, .3, true),
   new Line([1-.1,1.45], [.99-.1,-1.45], 0.1, 0.3, true),
-  new Line([.1, -.0], [-0.1, 0.1], .1, 1.01),
+  new Line([-1+.1,1.18], [1-.1,1.189], 0.01, 0.01),
+  // new Line([.1, -.0], [-0.1, 0.1], .1, 1.01),
   // new Line([-.5, -.3], [-0.1, -0.1], 0, 1.2)
 ];
-lines.push(); 
+// var flipper1 = new Flipper([-.35, -1], 0.3, Math.PI*2/3, -Math.PI/30, Math.PI/3, 1.2);
+var flipper1 = new Flipper([-.32, -1], 0.3, Math.PI*2/3, -Math.PI/90, -Infinity, 1.01);
+flipper1.rotating = true;
+var flipper2 = new Flipper([.32, -1], 0.3, Math.PI*4/3, Math.PI/90, Infinity, 1.01);
+flipper2.rotating = true
 
 //Animations
 myCanvas.animate = function(_g) {
@@ -71,14 +82,20 @@ myCanvas.animate = function(_g) {
   
   m.identity();
   ball.move();
+  flipper1.rotate();
+  flipper2.rotate();
   for (var i = 0; i < lines.length; i++) {
     lines[i].collision(ball);
   }
+  flipper1.collision(ball);
+  flipper2.collision(ball);
   gameCheck(ball);
   drawSphere(ball);
   for (var i = 0; i < lines.length; i++) {
     drawLine(lines[i]);
   }
+  drawFlipper(flipper1);
+  drawFlipper(flipper2);
 
   
   g.strokeStyle = 'rgb(0,0,0)';

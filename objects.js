@@ -91,39 +91,24 @@ function Line(pointA, pointB, fiction, bouncingPower, isWall) {
         y = x*m1+b1;
         y_test = x*m2+b2; //this value is for testing purposes
 
-    // console.log(ballInstance.cord);
     if ( withinRange([x,y], ballInstance.cord, ballInstance.lastCord) && withinRange([x,y], this.a, this.b) ){
-      // console.log("location: " + ballInstance.cord);
-      // console.clear();
+
       if (this.iw){
-        // console.log("Wall!");
-        console.log("speed before: " + ballInstance.speed);
+        // console.log("speed before: " + ballInstance.speed);
         ballInstance.speed[0] = -1*ballInstance.speed[0]*this.bp*random
-        console.log("speed after: " + ballInstance.speed+"\n=======");
+        // console.log("speed after: " + ballInstance.speed+"\n=======");
         ballInstance.cord[0] = x;
         ballInstance.cord[1] = y;
         ballInstance.move();
         return true
       }
-      // console.log("speed before: " + ballInstance.speed);
       var perp_m = -1/m2,
           perp_b = y-perp_m*x;
       var offset = lineDotDist(ballInstance.lastCord, perp_m, perp_b);
-      // console.log("\nlastCord: "+ballInstance.lastCord);
-      // console.log("xy: "+[x,y]);
-      // console.log("cord"+ballInstance.cord);
-      // console.log("distance: " + DotDotDist(ballInstance.lastCord, [x,y]));
-      // console.log("longer dist: " + DotDotDist(ballInstance.lastCord, ballInstance.cord));
       var proportion = DotDotDist(ballInstance.lastCord, [x,y])/DotDotDist(ballInstance.lastCord, ballInstance.cord);
-      // proportion = 1; 
-      // console.log("Proportion: "+proportion);
-      // console.log("offset:" + offset);
       var nextPoint = [ballInstance.lastCord[0]+offset[0]*2, ballInstance.lastCord[1]+offset[1]*2];
       ballInstance.speed[0] = ((nextPoint[0]-x)/proportion)*this.bp*random;
       ballInstance.speed[1] = ((nextPoint[1]-y)/proportion)*this.bp*random;
-      // console.log("nextPoint = "+nextPoint);
-      // console.log("speed after: " + ballInstance.speed+"\n==========\n");
-      // console.log(ballInstance.speed[1])
       ballInstance.cord[0] = nextPoint[0];
       ballInstance.cord[1] = nextPoint[1];
 
@@ -133,7 +118,7 @@ function Line(pointA, pointB, fiction, bouncingPower, isWall) {
     }
 }
 
-function Sphere(xy, radius, bp){
+function Sphere(xy, radius, fiction, bouncingPower){
   this.xy = xy;
   this.r = radius;
 
@@ -142,21 +127,91 @@ function Sphere(xy, radius, bp){
   }
 }
 
-function Flipper(root, tip) {
-  this.root = tip;
-  this.tip = tip;
-  this.speed = 0;
+function Flipper(root, length, angle, angleIncrement, maxAngle, bouncingPower) {
+  this.root = root;
+
+  // this.angle = -Math.PI/6;
+  // this.angleIncrement = 0.1;
+  // this.maxAngle = Math.PI/6;
+  this.startAngle = angle;
+  this.angle = angle;
+  this.angleIncrement = angleIncrement;
+  this.maxAngle = maxAngle;
+  this.rotating = false;
+  this.length = length;
+  this.tip = [Math.sin(angle)*length+root[0], Math.cos(angle)*length+root[1]];
+  this.drawingTip = [Math.sin(angle)*(length-0.04)+root[0], Math.cos(angle)*(length-0.04)-0.02+root[1]]
+  this.bp = bouncingPower;
 
   this.rotate = function() {
-    //Stub
+    if (this.rotating){
+      // console.log("Hello");
+      if ((this.angle < this.maxAngle && this.angleIncrement > 0) || (this.angle > this.maxAngle && this.angleIncrement < 0)){
+        this.angle = this.angle+this.angleIncrement;
+        this.rotateTip();
+      } else {
+        this.rotating = false;
+        this.angle = this.startAngle;
+        this.rotateTip();
+      }     
+    }
   }
 
   this.collision = function(ballInstance){
-    //STUB
+    var random = Math.random()*0.1+1;
+    // var random = 1;
+    // console.log(random);
+    var result1 = slopeIntercept(ballInstance.lastCord, ballInstance.cord),
+        m1 = result1[0],
+        b1 = result1[1];
+    var result2 = slopeIntercept(this.root, this.tip),
+        m2 = result2[0],
+        b2 = result2[1];
+    var x = (b2-b1)/(m1-m2),
+        y = x*m1+b1;
+        y_test = x*m2+b2; //this value is for testing purposes
+
+    if ( withinRange([x,y], ballInstance.cord, ballInstance.lastCord) && withinRange([x,y], this.root, this.tip) ){
+      console.log("Hitting");
+      var perp_m = -1/m2,
+          perp_b = y-perp_m*x;
+      var offset = lineDotDist(ballInstance.lastCord, perp_m, perp_b);
+      var proportion = DotDotDist(ballInstance.lastCord, [x,y])/DotDotDist(ballInstance.lastCord, ballInstance.cord);
+      var nextPoint = [ballInstance.lastCord[0]+offset[0]*2, ballInstance.lastCord[1]+offset[1]*2];
+      ballInstance.speed[0] = ((nextPoint[0]-x)/proportion)*this.bp*random;
+      ballInstance.speed[1] = ((nextPoint[1]-y)/proportion)*this.bp*random;
+      ballInstance.cord[0] = nextPoint[0];
+      ballInstance.cord[1] = nextPoint[1];
+
+      return true
+    }
+    return false;
+  }
+
+  this.rotateTip = function() {
+    this.tip[0] = Math.sin(this.angle)*this.length+this.root[0];
+    this.tip[1] = Math.cos(this.angle)*this.length+this.root[1];
+    this.drawingTip[0] = Math.sin(this.angle)*(this.length-0.04)+this.root[0];
+    this.drawingTip[1] = Math.cos(this.angle)*(this.length-0.04)+this.root[1];
   }
 }
 
 // Unit testing
+
+// var flipper1 = new Flipper([0, 0], 1, -Math.PI/6, Math.PI/60, Math.PI/6);
+// var flipper2 = new Flipper([0, 0], 1, Math.PI*7/6, -Math.PI/60, Math.PI*5/6);
+// flipper1.rotating = true;
+
+// for (var i = 0; i < 40; i ++){
+//   flipper1.rotate();
+//   // flipper2.rotate();
+//   // console.log("flipper1: " + flipper1.tip);
+//   // console.log("flipper2: " + flipper2.tip);
+
+// }
+
+
+
 
 // var line1 = new Line([-.1, 0], [0.1, 0.1], 0, 1.2);
 // // var line2 = new Line([-0.9, -1.45], [-1,1.45], 0, 1);
