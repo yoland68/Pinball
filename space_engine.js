@@ -84,6 +84,7 @@ myCanvas.animate = function(_g) {
   g = _g;
   w = g.canvas.width;
   h = g.canvas.height;
+  counter = 0;
 
   // MAKE A GREEN BACKGROUND.
   g.fillStyle = 'rgb(250, 200, 100)';
@@ -96,8 +97,12 @@ myCanvas.animate = function(_g) {
   g.fill(); 
   
   m.identity();
-  // m.rotateZ(time);
-  // m.rotateY(time);
+  m.rotateZ(Math.sin(time));
+  var random =
+  // if (counter%100 == 0)
+    // random = Math.random();
+  m.rotateX(Math.cos(time*0.3));
+  m.rotateY(time);
   ball.move();
   flipper1.rotate();
   flipper2.rotate();
