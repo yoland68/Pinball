@@ -172,7 +172,7 @@ function Flipper(root, length, angle, angleIncrement, maxAngle, bouncingPower) {
         y_test = x*m2+b2; //this value is for testing purposes
 
     if ( withinRange([x,y], ballInstance.cord, ballInstance.lastCord) && withinRange([x,y], this.root, this.tip) ){
-      console.log("Hitting");
+      // console.log("Hitting");
       var perp_m = -1/m2,
           perp_b = y-perp_m*x;
       var offset = lineDotDist(ballInstance.lastCord, perp_m, perp_b);

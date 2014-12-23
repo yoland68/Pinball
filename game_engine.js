@@ -52,10 +52,14 @@ function gameCheck(ballInstance) {
 //Global variables
 var ball = new Ball([.1,1.1], [0.0001,0], .02);
 var lines = [
-  new Line([-.99+0.1, -1.45], [-1+.1,1.45], 0.1, .3, true),
-  new Line([1-.1,1.45], [.99-.1,-1.45], 0.1, 0.3, true),
+  new Line([-.99+0.1, -1.18], [-1+.1,1.18], 0.1, .3, true),
+  new Line([1-.1,1.18], [.99-.1,-1.18], 0.1, 0.3, true),
   new Line([-1+.1,1.18], [1-.1,1.189], 0.01, 0.01),
-  // new Line([.1, -.0], [-0.1, 0.1], .1, 1.01),
+  new Line([0, -.0], [-0.2, 0.1], .1, 1.01),
+  new Line([-0.3, -.4], [-0.2, 0.1], .1, 1.01),
+  new Line([-0.32, -1], [-.7, -0.91], .1, 1.01),
+  new Line([.32, -1], [.7, -.91], .1, 1.01)
+  // new Line([-0.3, -.4], [-0.2, 0.1], .1, 1.01),
   // new Line([-.5, -.3], [-0.1, -0.1], 0, 1.2)
 ];
 // var flipper1 = new Flipper([-.35, -1], 0.3, Math.PI*2/3, -Math.PI/30, Math.PI/3, 1.2);
@@ -81,6 +85,8 @@ myCanvas.animate = function(_g) {
   g.fill(); 
   
   m.identity();
+  // m.rotateZ(time);
+  // m.rotateY(time);
   ball.move();
   flipper1.rotate();
   flipper2.rotate();
