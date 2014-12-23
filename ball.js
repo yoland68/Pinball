@@ -1,19 +1,20 @@
 function Ball(xy, speed, radius) {
   this.originalxy = xy.slice(0);
   this.originalspeed = speed.slice(0);
-  // this.originalspeed
-  // this.originalxy = xy.slice(0);
-  // console.log(xy);
   this.cord = xy;
   this.speed = speed;
   this.r = radius;
 
-  this.sphereCollision = function(){
+  this.lineCollision = function(){
     //STUB
   }
 
   this.sphereCollision = function(){
     //STUB
+  }
+
+  this.flipperCollision = function(){
+    
   }
 
   this.move = function() {
@@ -32,7 +33,7 @@ function Ball(xy, speed, radius) {
     this.cord[1] = this.originalxy[1];
     this.speed[0] = this.originalspeed[0];
     this.speed[1] = this.originalspeed[1];
-    
+
   }
 }
 

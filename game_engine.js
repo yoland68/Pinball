@@ -33,7 +33,8 @@ function drawSphere(ballInstance){
 function gameCheck(ballInstance) {
   var q = m.transform([ballInstance.cord[0], ballInstance.cord[1], 0]);
   var xy = viewport(q);
-  if (Math.abs(xy[0]+viewtranslate(ballInstance.r))>w || Math.abs(xy[1]+viewtranslate(ballInstance.r))>h ){
+  if (Math.abs(xy[0])+viewtranslate(ballInstance.r)>w || Math.abs(xy[1])+viewtranslate(ballInstance.r)>h ){
+    //If the ball is out of of the frame
     ballInstance.reset();
   }
 }
