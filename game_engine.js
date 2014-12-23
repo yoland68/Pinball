@@ -44,8 +44,8 @@ function gameCheck(ballInstance) {
 }
 
 //Global variables
-var ball = new Ball([0,.5], [0,0], .02);
-var line1 = new Line([-.1, 0], [.1, 0], 0, 0);
+var ball = new Ball([0,.5], [0.0001,0], .02);
+var line1 = new Line([-.1, 0], [0.1, 0], 0, 0);
 
 //Animations
 myCanvas.animate = function(_g) {
