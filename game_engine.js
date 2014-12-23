@@ -46,11 +46,10 @@ function gameCheck(ballInstance) {
 //Global variables
 var ball = new Ball([0,2], [0.0001,0], .02);
 var lines = [
-  new Line([-0.9, -1.5], [-1,1], 0, 1),
-  new Line([1,1], [.9,-1.5], 0, 1),
-  // new Line([1,-1], [-1,-1], 0, 1),
-  new Line([-.1, 0], [0.1, 0.1], 0, 1.2),
-  new Line([-.5, -.3], [-0.1, -0.1], 0, 1.2),
+  new Line([-.99+0.1, -1.45], [-1+.1,1.45], 0.1, .3, true),
+  new Line([1-.1,1.45], [.99-.1,-1.45], 0.1, 0.3, true),
+  new Line([.1, -.0], [-0.1, 0.1], .1, 1.01),
+  // new Line([-.5, -.3], [-0.1, -0.1], 0, 1.2)
 ];
 lines.push(); 
 
@@ -85,4 +84,5 @@ myCanvas.animate = function(_g) {
   g.strokeStyle = 'rgb(0,0,0)';
   g.lineWidth = 10;
   g.stroke()
+
 }
