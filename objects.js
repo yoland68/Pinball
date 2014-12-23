@@ -64,6 +64,15 @@ function withinRange(point, limitA, limitB, printit){
   return false;
 }
 
+function calcDist(point, m, i){
+  var a = m,
+      b = -1,
+      c = i;
+  var x = (b*(b*point[0]-a*point[1])-a*c)/(a*a+b*b),
+      y = (a*(-b*point[0]+a*point[1])-b*c)/(a*a+b*b);
+  return [y-point[1], x-point[0]];
+}
+
 //Objects
 function Line(pointA, pointB, fiction, bp) {
   this.a = pointA;
@@ -82,16 +91,21 @@ function Line(pointA, pointB, fiction, bp) {
         y = x*m1+b1;
         y_test = x*m2+b2; //this value is for testing purposes
 
-    // console.log(ballInstance.lastCord + "\t" + ballInstance.cord);
-    // if (ballInstance.lastCord[1] > 0 && ballInstance.cord[1] < 0) {
-    //   console.log("cross");
-    //   console.log(withinRange([x,y], ballInstance.cord, ballInstance.lastCord, true));
-    // }
 
     if ( withinRange([x,y], ballInstance.cord, ballInstance.lastCord) && withinRange([x,y], this.a, this.b) ){
-      // console.log(ballInstance.cord + "\t" + ballInstance.lastCord);
-      // console.log(x,y);
-      return true;
+      console.log(ballInstance.speed);
+      m2 = m2 == 0 ? 1000000 : m2;
+      var perp_m = -1/m2,
+          perp_b = y-perp_m*x;
+      // console.log("perp_m = " + perp_m);
+      // console.log("perp_b = " + perp_b);
+      var offset = calcDist(ballInstance.lastCord, perp_m, perp_b);
+      var nextPoint = [ballInstance.lastCord[0]+offset[0]*2, ballInstance.lastCord[1]+offset[1]*2];
+      ballInstance.speed[0] = nextPoint[0]-ballInstance.cord[0];
+      ballInstance.speed[1] = nextPoint[1]-ballInstance.cord[1];
+      console.log(ballInstance.speed+"\n");
+      ballInstance.move()
+      return true
     }
     return false;
     }
@@ -119,3 +133,14 @@ function Flipper(root, tip) {
     //STUB
   }
 }
+
+// Unit testing
+
+// var line = new Line([-1,0], [1,0], 0, 0);
+// var ball = new Ball([0,.5], [0.0001,0], .02);
+// for (var i = 0; i < 100; i ++){
+//   ball.move();
+//   line.collision(ball);
+// }
+
+
